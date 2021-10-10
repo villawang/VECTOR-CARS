@@ -5,5 +5,6 @@ By [Zhengwei Wang](https://villawang.github.io/)\*, [Kevin O’ Dwyer](https://w
 
 \* Equal contribution
 
+<p align="center"><img src="./imgs/Figure 1.png" width="800px"></img> 
 
 <p align="center"><img src="./imgs/CAE_architecture-1.png" width="800px"></img> 
