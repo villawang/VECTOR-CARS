@@ -7,6 +7,6 @@ By [Zhengwei Wang](https://villawang.github.io/)\*, [Kevin O’ Dwyer](https://w
 
 <p align="center"><img src="./imgs/Figure 1.png" width="600px"></img> 
 
-Figure 1:  (a) Diagram of the setup of the B-CARS RMS,(b) CARS energy level diagram ($ω_p$: Pump frequency,ωs:Stokes frequency,$ω_pr$: Probe frequency,ωas: anti-Stokesfrequency).
+Figure 1:  (a) Diagram of the setup of the B-CARS RMS,(b) CARS energy level diagram (ω_p: Pump frequency,ωs:Stokes frequency,ω_pr: Probe frequency,ω_as: anti-Stokesfrequency).
 
 <p align="center"><img src="./imgs/CAE_architecture-1.png" width="800px"></img> 
