@@ -7,6 +7,8 @@ By [Zhengwei Wang](https://villawang.github.io/)\*, [Kevin O’ Dwyer](https://w
 
 <p align="center"><img src="./imgs/Figure 1.png" width="600px"></img> 
 
-Figure 1:  (a) Diagram of the setup of the B-CARS RMS,(b) CARS energy level diagram (ω_p: Pump frequency,ωs:Stokes frequency,ω_pr: Probe frequency,ω_as: anti-Stokesfrequency).
+Fig. 1: (a) Diagram of the setup of the B-CARS RMS, (b) CARS energy level diagram (ω_p: Pump frequency, ω_s: Stokes frequency, ω_pr: Probe frequency,ω_as: anti-Stokesfrequency).
 
 <p align="center"><img src="./imgs/CAE_architecture-1.png" width="800px"></img> 
+
+Fig. 2: The example of VECTOR-8 architecture used in this study. Convolutional layers in the encoder and transposed convolutional layers in the decoder are symmetric i.e., the input dimension to the convolutional layer and the output dimension to the paired transposed convolutional layer are the same.
