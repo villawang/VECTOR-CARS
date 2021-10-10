@@ -12,3 +12,18 @@ Fig. 1: (a) Diagram of the setup of the B-CARS RMS, (b) CARS energy level diagra
 <p align="center"><img src="./imgs/CAE_architecture-1.png" width="800px"></img> 
 
 Fig. 2: The example of VECTOR-8 architecture used in this study. Convolutional layers in the encoder and transposed convolutional layers in the decoder are symmetric i.e., the input dimension to the convolutional layer and the output dimension to the paired transposed convolutional layer are the same.
+
+
+## Getting Started 
+Instructions how to use this repo.
+
+## Requirements 
+Required Python environment added here. Better to upload a Docker file.
+
+
+## Pretrained models
+Pretrianed model link added here
+
+
+## Citation
+Formats to cite our paper.
