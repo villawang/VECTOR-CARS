@@ -15,7 +15,7 @@ Fig. 2: The example of VECTOR-8 architecture used in this study. Convolutional l
 
 
 ## Getting Started 
-Instructions how to use this repo.
+You can use the test jupyter notebook to test the pretrained network
 
 ## Requirements 
 Required Python environment added here. Better to upload a Docker file.
