@@ -1,0 +1,30 @@
+First set up your cuda and pytorch envoirnment
+
+Open Terminal
+
+Go to path where you have stored train.py ect example:
+cd C:\Users\bryan\OneDrive\Documents\Anaconda\Raman-denoise-master\VECTOR-GITHUB_1\
+
+To train use:
+python train.py --is_train --cuda_id 0 --is_skip --base_model cae_8
+Note you should edit parameters like dataset size, leanring rate, epoch number from within train.py or using an argument in teh call above.
+You can change the layer number from cae4 to cae9
+
+If you want to run a test on an existing trained model type something like one of these lines below: Note --dataset X will test on a particular test dataset. If you are testing you will need to make sure the test set is available in the approriate xls file as referenced in train.py 
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 1
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 2
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 3
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 4
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 5
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 6
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 7
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 8
+python train.py --cuda_id 0 --is_skip --base_model cae_8 --dataset 9
+
+Note Generate_data.py contains the code that generates the training and validation datasets
+
+Train.py now accepts a number for --dataset, which should take an int value from 1-9. 
+Train.py will generate the necessary datasets of size 200000 and 20000 on the fly. 
+Typical call to change dataset type in training should be: python train.py --is_train --cuda_id 0 --is_skip --base_model cae_7 --epochs 200 --dataset 1
+Once this is completed a second call should be made to generate a small set of results for the paper - simply make the same call again not including --is_train. This will use the weights from the training and generate results for a small set of 100 spectra that have been shared and will output the resuls in an excel file with appropriate name
+
