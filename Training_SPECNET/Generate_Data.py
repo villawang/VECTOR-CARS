@@ -6,7 +6,7 @@ import pandas as pd
 #Global variables for number of data points and wavenumber axis
 min_wavenumber = 0.1
 max_wavenumber = 2000
-n_points = 1000
+n_points = 640
 step = (max_wavenumber-min_wavenumber)/(n_points)
 wavenumber_axis = np.arange(min_wavenumber, max_wavenumber, step)
 nu = np.linspace(0,1,n_points)
@@ -143,9 +143,6 @@ def generate_nrb():
     outputs
         NRB: (n_points,)
     """
-    
-    
-    
     nu = np.linspace(0,1,n_points)
     bs = np.random.normal(10/max_wavenumber,5/max_wavenumber,2)
     c1 = np.random.normal(0.2*max_wavenumber,0.3*max_wavenumber)
@@ -163,7 +160,7 @@ def generate_nrb():
 
 
 #Define functions for generating bCARS spectrum 
-def generate_bCARS(min_features=30,max_features=50,min_width=2,max_width=75):
+def generate_bCARS(min_features,max_features,min_width,max_width):
     """
     Produces a cars spectrum.
     It outputs the normalized cars and the corresponding imaginary part.
@@ -173,111 +170,13 @@ def generate_bCARS(min_features=30,max_features=50,min_width=2,max_width=75):
     """
     chi3 = generate_chi3(random_parameters_for_chi3(min_features,max_features,min_width,max_width))*np.random.uniform(0.3,1) #add weight between .3 and 1 
     nrb = generate_nrb() #nrb will have valeus between 0 and 1
-    #noise = np.random.randn(n_points)*np.random.uniform(0.0005,0.003)#this is what we did for the paper
-    sigma=np.random.uniform(0.005,0.03)
-    noise = np.random.randn(n_points)*sigma
-    
+    noise = np.random.randn(n_points)*np.random.uniform(0.0005,0.003)
     bcars = ((np.abs(chi3+nrb)**2)/2+noise)
-#    plt.figure()
-#    plt.plot(chi3.imag)
-#    plt.plot(nrb)
-#    plt.plot((np.abs(chi3+nrb)**2))
-#    plt.plot(noise)
-#    plt.grid()
-#    plt.show()
-    SNR1=np.max((np.abs(chi3+nrb)**2))/sigma
-    SNR2=np.max((np.abs(chi3.imag)))/sigma
-
-#    print(SNR)
-
-    return SNR1,SNR2, bcars, chi3.imag
-    
-    
-def generate_nrb_SNR(a,b,c,d):
-    """
-    Produces a normalized shape for the NRB
-    outputs
-        NRB: (n_points,)
-    """
-    nu = np.linspace(0,1,n_points)
-    #cs=[-219.76328986 1848.95252205]
-    #bs=[0.00829612 0.00332525]
-    cs=[a, b]
-    bs=[c, d]
-    sig1 = sigmoid(wavenumber_axis, cs[0], bs[0])
-    sig2 = sigmoid(wavenumber_axis, cs[1], -bs[1])
-    nrb  = sig1*sig2
-#    print(cs,bs)
-#    plt.figure()
-#    plt.plot(np.abs(nrb))
-#    plt.grid()
-#    plt.show()
-    return nrb
-    
-def generate_bCARS_SNR(p,weight_chi,weight_nrb,sigma):
-    chi3 = generate_chi3(p)*weight_chi #add weight between .3 and 1 
-    nrb = generate_nrb_SNR(200,1600,0.005,0.0075)*weight_nrb
-    #noise = np.random.randn(n_points)*np.random.uniform(0.0005,0.003)#this is what we did for the paper
-    #sigma=np.random.uniform(0.005,0.03)
-    sigma = np.max(0.5*(np.abs(chi3+nrb)**2))*sigma # define sigma in terms of SNR
-
-
-    noise = np.random.randn(n_points)*sigma
-    
-    bcars = ((np.abs(chi3+nrb)**2)/2+noise)
-    SNR1=np.max((np.abs(chi3+nrb)**2))/sigma
-    SNR2=np.max((np.abs(chi3.imag)))/sigma
-
+#     plt.figure()
+#     plt.plot(chi3.imag)
+#     plt.grid()
+#     plt.show()
     return bcars, chi3.imag
-    
-def generate_batch_SNR(size = 10000):
-    min_features = 30 
-    max_features = 50 
-    min_width = 2
-    max_width = 75
-
-    BCARS = np.empty((size*5*3,n_points))
-    RAMAN = np.empty((size*5*3,n_points))
-    
-    weight_chi = [1, 1, 1.0, 0.1, 0.01]
-    weight_nrb = [0.01, 0.1, 1.0, 1, 1]
-    sigma = [0.001, 0.01, 0.1]
-    count=0
-    for i in range(size):
-        params = random_parameters_for_chi3(min_features,max_features,min_width,max_width)
-        for a in range(5):
-            for b in sigma:
-                BCARS[count,:], RAMAN[count,:] = generate_bCARS_SNR(params,weight_chi[a],weight_nrb[a],b)
-                count+=1
-    pd.DataFrame(RAMAN).to_csv('Raman_SNR_study.csv')
-    pd.DataFrame(BCARS).to_csv('CARS_SNR_study.csv')
-
-    return BCARS, RAMAN
-
-def find_SNR(N=10000):
-    avg1=0
-    maxi1=0
-    mini1=1e12
-    
-    avg2=0
-    maxi2=0
-    mini2=1e12
-    for n in range(N):
-        a,b,c,d=generate_bCARS()
-        avg1+=a
-        avg2+=b
-        if a>maxi1:
-            maxi1=a 
-        if a<mini1:
-            mini1=a 
-        if b>maxi2:
-            maxi2=b 
-        if b<mini2:
-            mini2=b            
-    avg1/=N
-    avg2/=N
-    print(avg1,maxi1,mini1)
-    print(avg2,maxi2,mini2)
 
 def generate_batch(min_features,max_features,min_width,max_width,size = 10000):
     BCARS = np.empty((size,n_points))
@@ -292,17 +191,6 @@ def generate_all_data(min_features,max_features,min_width,max_width,N_train,N_va
     BCARS_train, RAMAN_train = generate_batch(min_features,max_features,min_width,max_width,N_train) # generate bactch for training
     BCARS_valid, RAMAN_valid = generate_batch(min_features,max_features,min_width,max_width,N_valid) # generate bactch for validation
     return BCARS_train, RAMAN_train, BCARS_valid, RAMAN_valid
-    
-
-#generate_batch(10)    
-def generate_data_SNR(min_features,max_features,min_width,max_width,N_train,N_valid):
-    min_features = 30 
-    max_features = 50 
-    min_width = 2
-    max_width = 75
-    N = 100 #number of different spectra
-    BCARS, RAMAN = generate_batch_SNR(min_features,max_features,min_width,max_width,N) # generate bactch for training
-    return BCARS, RAMAN
 
 def generate_datasets_(dataset_number,N):
     if dataset_number == 1:
@@ -471,18 +359,43 @@ def generate_and_save_data(N_train,N_valid,fname='./data/',a=1,b='a'):
 
     return BCARS_train, RAMAN_train, BCARS_valid, RAMAN_valid
 
-def load_data(name1,name2):
+def load_data(dataset_number):
     # load training set
-    RAMAN_train = pd.read_csv(name1)
-    BCARS_train = pd.read_csv(name2)
+    if dataset_number == 1:
+        a=1
+        b='a'
+    elif dataset_number == 2:
+        a=1
+        b='b'
+    elif dataset_number == 3:
+        a=1
+        b='c'
+    elif dataset_number == 4:
+        a=2
+        b='a'
+    elif dataset_number == 5:
+        a=2
+        b='b'
+    elif dataset_number == 6:
+        a=2
+        b='c'
+    elif dataset_number == 7:
+        a=3
+        b='a'
+    elif dataset_number == 8:
+        a=3
+        b='b'
+    else:
+        a=3
+        b='c'
 
     plt.figure()
     plt.plot(RAMAN_train[2:4])
     plt.show()
 
     # load validation set
-    RAMAN_valid = pd.read_csv('./data/3bRaman_spectrums_valid.csv')
-    BCARS_valid = pd.read_csv('./data/3bCARS_spectrums_valid.csv')
+    RAMAN_valid = pd.read_csv('./data/'+str(a)+b+'Raman_spectrums_valid.csv')
+    BCARS_valid = pd.read_csv('./data/'+str(a)+b+'3bCARS_spectrums_valid.csv')
 
     RAMAN_train = RAMAN_train.values[:,1:]
     BCARS_train = BCARS_train.values[:,1:]
